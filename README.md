@@ -1,10 +1,12 @@
-# Appium log reader [![Packagist License][badge_license]](LICENSE.md)
+# Appium log reader
 Appium log reader is a simple viewer that works with the Appium logs. It supports filtering, searching, highlighting and many other useful features. 
 
 [Appium](http://appium.io) has a built-in mechanism in order to post messages to an external Webhook. They make use of normal HTTP requests with a JSON payload that includes a log message and the log level. This service listens these messages.
 
 You can also use **Appium log reader** as an API.
 
+
+---
 
 ![Dashboard](https://raw.githubusercontent.com/mobileboxlab/appium-log-reader/master/docs/screen.png)
 
