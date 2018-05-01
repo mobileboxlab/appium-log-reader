@@ -6,6 +6,8 @@ Appium log reader is a simple viewer that works with the Appium logs. It support
 You can also use **Appium log reader** as an API.
 
 
+![Dashboard](https://raw.githubusercontent.com/mobileboxlab/appium-log-reader/master/docs/screen.png)
+
 ## Features
 
   - A great Appium log HTTP API.
