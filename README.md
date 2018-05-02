@@ -47,6 +47,8 @@ An alternative way to run the **Appium Log Reader** is via Docker:
 
 # HTTP API
 
+Appium Log Reader’s HTTP API serves two primary purposes:
+
 * The Appium Log Reader API gives you a way to embed Appium logs into another webpage or a third-party application.
 
 * Programmatic search for logs. Most common tasks you might want to do outside the Appium console output or Appium Log Reader Dashboard, like searching programmatically for logs and retrieving logs during a certain time period, etc.
