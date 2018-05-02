@@ -3,7 +3,7 @@
 
 [Appium](http://appium.io) has a built-in mechanism in order to post messages to an external Webhook. They make use of normal HTTP requests with a JSON payload that includes a log message and the log level. This service listens these messages.
 
-You can also use **Appium Log Reader** as an API.
+You can also use **Appium Log Reader** as an [API](https://github.com/mobileboxlab/appium-log-reader#http-api).
 
 
 ---
