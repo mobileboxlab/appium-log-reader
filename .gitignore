@@ -25,4 +25,5 @@ hs_err_pid*
 .project
 .settings/
 test-output/
+dependency-reduced-pom.xml
 

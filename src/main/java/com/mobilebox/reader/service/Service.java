@@ -82,19 +82,19 @@ public class Service {
 
 		/**
 		 * @api {get} /log
-		 * @apiDescription Retrieve the page (Yes, the page).
-		 * @apiGroup Log
+		 * @apiDescription Retrieve the dashboard (Yes, the dashboard).
+		 * @apiGroup Internal
 	     * @apiVersion 1.0.0
 		 * 
 		 */
 		get("/log", (request, response) -> new ModelAndView(service, "reader.mustache"), new MustacheEngine());
 
 	    /**
-	     * @api {get} /logs/last
+	     * @api {get} /logs
 	     * @apiDescription Retrieve a collection of all log messages.
-	     * @apiGroup Log
+	     * @apiGroup Logs
 	     * @apiVersion 1.0.0
-	     * @apiName GetLastLine
+	     * @apiName GetLogs
 	     * 
 	     * @apiSuccessExample Success-Response: 
 	     * HTTP/1.1 200 OK
@@ -138,7 +138,7 @@ public class Service {
 	    /**
 	     * @api {get} /logs/last
 	     * @apiDescription Retrieve the last log message.
-	     * @apiGroup Log
+	     * @apiGroup Logs
 	     * @apiVersion 1.0.0
 	     * @apiName GetLastLine
 	     * 
@@ -163,7 +163,7 @@ public class Service {
 	    /**
 	     * @api {get} /logs/last/html
 	     * @apiDescription Retrieve the last log message (HTML format)
-	     * @apiGroup Log
+	     * @apiGroup Internal
 	     * @apiVersion 1.0.0
 	     * @apiName GetLastLineHtml
 	     * 
@@ -198,7 +198,7 @@ public class Service {
 	    /**
 	     * @api {get} /logs/total/:level
 	     * @apiDescription Retrieve the total of a given log level. (Plain text format)
-	     * @apiGroup Log
+	     * @apiGroup Internal
 	     * @apiVersion 1.0.0
 	     * @apiName GetTotalByLevel
 	     * 
@@ -219,7 +219,7 @@ public class Service {
 	    /**
 	     * @api {get} /logs/:lines 
 	     * @apiDescription Retrieve N lines of log (from the beginning).
-	     * @apiGroup Log
+	     * @apiGroup Logs
 	     * @apiVersion 1.0.0
 	     * @apiName GetLines
 	     * @apiParam {int} lines Number of lines to retrieve.
