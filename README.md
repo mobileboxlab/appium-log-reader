@@ -15,7 +15,6 @@ You can also use **Appium Log Reader** as an API.
   - A great Appium log HTTP API.
   - View, filter, searching and and export logs in different formats such as: XLS, CSV, TXT, JSON, SQL, etc.
   - Localized log levels.
-  - Grouped logs levels.
   - Shortcut to search errors messages on [DuckDuckGo](https://duckduckgo.com)
 
 # Prerequisites
@@ -151,6 +150,26 @@ http http://127.0.0.1:5000/api/v1/logs/1
   }
 }
 ```
+
+# API Documentation
+
+We use [apiDoc](http://apidocjs.com/) in order to generate documentation for Appium Log Reader’s HTTP API.
+
+**apiDoc** creates a documentation from API annotations in your source code. Please check the documentation [here(http://apidocjs.com/#params)
+
+The proyect come with a Maven task in order to generate the documentation from Maven without any pain, but FIRST you need install **apiDoc** of course:
+
+```bash
+npm install apidoc -g 
+```
+
+And now we need execute the following command: 
+
+```bash
+mvn exec:exec
+```
+
+The documentation is generated on the **doc** directory.
 
 ## Contribution
 
