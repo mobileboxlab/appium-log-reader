@@ -25,7 +25,7 @@ You will need:
 
 # Getting Started
 
-* Download the latest version of [Appium Log Reader]() (requires JDK 1.8 or newer) and install Appium
+* Download the latest version of [Appium Log Reader](https://github.com/mobileboxlab/appium-log-reader/releases) (requires JDK 1.8 or newer) and install Appium
 * Start **Appium Log Reader**:
 
 ```bash
