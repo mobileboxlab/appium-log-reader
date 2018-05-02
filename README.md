@@ -157,7 +157,7 @@ http http://127.0.0.1:5000/api/v1/logs/1
 
 # API Documentation
 
-We use [apiDoc](http://apidocjs.com/) in order to generate documentation for Appium Log Reader’s HTTP API.
+We use [apiDoc](http://apidocjs.com/) in order to generate the [documentation](https://mobileboxlab.github.io/appium-log-reader/) for Appium Log Reader’s HTTP API.
 
 **apiDoc** creates a documentation from API annotations in your source code. Please check the documentation [here](http://apidocjs.com/#params)
 
@@ -173,7 +173,7 @@ And now we need execute the following command:
 mvn exec:exec
 ```
 
-The documentation is generated on the **doc** directory.
+The documentation is generated on the **doc** directory. 
 
 ## Contribution
 
