@@ -182,8 +182,3 @@ Any ideas are welcome. Feel free to submit any issues or pull requests.
 ---
 **Appium Log Reader** is developed and maintained by [Mobilebox](http://mobileboxlab.com) team.
 
-Made with love in
-
-
-
-![Montevideo](https://raw.githubusercontent.com/mobileboxlab/appium-log-reader/master/doc/mvd.png)
