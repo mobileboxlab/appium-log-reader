@@ -8,7 +8,7 @@ You can also use **Appium Log Reader** as an [API](https://github.com/mobileboxl
 
 ---
 
-![Dashboard](https://raw.githubusercontent.com/mobileboxlab/appium-log-reader/master/docs/screen.png)
+![Dashboard](https://raw.githubusercontent.com/mobileboxlab/appium-log-reader/master/doc/screen.png)
 
 ## Features
 
