@@ -55,11 +55,8 @@ An alternative way to run the **Appium Log Reader** is via Docker:
 
 The Appium Log Reader API lives at [http://127.0.0.1:5000/api/v1/](http://127.0.0.1:5000/api/v1/), with particular endpoints following that prefix.
 
-Responses are in **JSON** (except for some endpoint that are used on the Dashboard), so it expects HTTP requests to have the header:
+Responses are in **JSON** (except for some endpoint that are used on the Dashboard)
 
-```javascript
-Accept: application/json
-```
 ## Errors
 
 Failed requests return **400 Bad Request**, and a JSON hash is provided containing a key called message with further information about the issue. For example:
@@ -77,7 +74,7 @@ Failed requests return **400 Bad Request**, and a JSON hash is provided containi
 
 API examples use [httpie](https://httpie.org), a command-line HTTP client.
 
-Retrieve a collection of all log messages.
+Retrieve a collection of all log messages:
 
 ```bash
 http http://127.0.0.1:5000/api/v1/logs
@@ -114,7 +111,7 @@ http http://127.0.0.1:5000/api/v1/logs
 }
 ```
 
-Retrieve the last log message.
+Retrieve the last log message:
 
 ```bash
 http http://127.0.0.1:5000/api/v1/logs/last
@@ -131,7 +128,7 @@ http http://127.0.0.1:5000/api/v1/logs/last
 }
 ```
 
- Retrieve N lines of log (from the beginning).
+ Retrieve N lines of log (from the top):
 
 ```bash
 http http://127.0.0.1:5000/api/v1/logs/1
