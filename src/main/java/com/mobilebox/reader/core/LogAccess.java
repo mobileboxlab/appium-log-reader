@@ -35,6 +35,23 @@ public class LogAccess {
 		return logs;
 	}
 
+	/**
+	 * Appends the given {@link Log} to the end of this list.
+	 * 
+	 * @param log
+	 *            A {@link Log} instance.
+	 */
+	public void add(Log log) {
+		logContent.add(log);
+	}
+
+	/**
+	 * Removes all of the elements from the log list.
+	 */
+	public void clear() {
+		logContent.clear();
+	}
+
 	/*
 	 * Retrieve last lines of log.
 	 * 

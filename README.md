@@ -33,7 +33,7 @@ You will need:
 * Start **Appium Log Reader**:
 
 ```bash
-java - jar appium-log-reader-service-X.X.X.jar -p 5000 -i 127.0.0.1
+java - jar appium-log-reader-service-X.X.X.jar -p 5000
 ```
 
 * Start **Appium** using **--webhook** flag. This flag enable the log output to HTTP listener:
@@ -42,11 +42,11 @@ java - jar appium-log-reader-service-X.X.X.jar -p 5000 -i 127.0.0.1
 appium --webhook 127.0.0.1:5000 
 ```
 
-* Navigate to [http://127.0.0.1:5000/log](http://127.0.0.1:5000/log) to view the dashboard.
+* Navigate to [http://127.0.0.1:5000/dashboard](http://127.0.0.1:5000/dashboard) to view the dashboard.
 
 ## Docker
 An alternative way to run the **Appium Log Reader** is via Docker:
-
+**TODO**
 
 # HTTP API
 
@@ -55,6 +55,7 @@ Appium Log Reader’s HTTP API serves two primary purposes:
 * The Appium Log Reader API gives you a way to embed Appium logs into another webpage or a third-party application.
 
 * Programmatic search for logs. Most common tasks you might want to do outside the Appium console output or Appium Log Reader Dashboard, like searching programmatically for logs and retrieving logs during a certain time period, etc.
+
 
 ## URL structure
 
@@ -91,22 +92,27 @@ http http://127.0.0.1:5000/api/v1/logs
   "data": {
     "items": [
       {
+        "time": "2018.05.17.11.09.39",
         "message": "[Appium] Appium REST http interface listener started on 0.0.0.0:4723",
         "level": "info"
       },
       {
+        "time": "2018.05.17.11.09.39",
         "message": "[Appium] Appium support for versions of node < 8 has been deprecated and will be removed in a future version. Please upgrade!",
         "level": "warn"
       },
       {
+        "time": "2018.05.17.11.09.39",
         "message": "[Appium]   webhook: 127.0.0.1:5000",
         "level": "info"
       },
       {
+        "time": "2018.05.17.11.09.39",
         "message": "[Appium] Welcome to Appium v1.8.0",
         "level": "info"
       },
       {
+        "time": "2018.05.17.11.09.39",
         "message": "[Appium] Non-default server args:",
         "level": "info"
       }
@@ -127,6 +133,7 @@ http http://127.0.0.1:5000/api/v1/logs/last
 ```json
 {
   "data": {
+    "time": "2018.05.17.11.09.39",
     "message": "[Appium] Appium REST http interface listener started on 0.0.0.0:4723",
     "level": "info"
   }
@@ -146,6 +153,7 @@ http http://127.0.0.1:5000/api/v1/logs/1
   "data": {
     "items": [
       {
+        "time": "2018.05.17.11.09.39",
         "message": "[Appium] Received SIGINT - shutting down",
         "level": "info"
       }
@@ -154,6 +162,13 @@ http http://127.0.0.1:5000/api/v1/logs/1
   }
 }
 ```
+
+Post your own log message:
+
+```bash
+http  http 127.0.0.1:5000/ params:='{"message": "My message", "level": "info" }'
+```
+
 
 # API Documentation
 

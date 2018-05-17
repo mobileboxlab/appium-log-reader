@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Appium Log Reader</title>
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+  <link href="css/admin.css" rel="stylesheet">
+</head>
+
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <a class="navbar-brand" href="dashboard">Appium Log Reader</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+          <a class="nav-link" href="/dashboard">
+            <i class="fa fa-fw fa-dashboard"></i>
+            <span class="nav-link-text">Dashboard</span>
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav sidenav-toggler">
+        <li class="nav-item">
+          <a class="nav-link text-center" id="sidenavToggler">
+            <i class="fa fa-fw fa-angle-left"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Resume</li>
+      </ol>
+      <div class="row">
+        <div class="col-xl-4 col-sm-6 mb-3">
+          <div class="card text-white bg-success o-hidden h-100">
+            <div class="card-body">
+              <div class="card-body-icon">
+                <i class="fa fa-check"></i>
+              </div>
+              <div class="mr-5" ic-src="/api/v1/logs/total/info" ic-poll="2s">Info</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4 col-sm-6 mb-3">
+          <div class="card text-white bg-warning o-hidden h-100">
+            <div class="card-body">
+              <div class="card-body-icon">
+                <i class="fa fa-exclamation-triangle"></i>
+              </div>
+              <div class="mr-5" ic-src="/api/v1/logs/total/warn" ic-poll="2s">Warn</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4 col-sm-6 mb-3">
+          <div class="card text-white bg-danger o-hidden h-100">
+            <div class="card-body">
+              <div class="card-body-icon">
+                <i class="fa fa-exclamation-circle"></i>
+              </div>
+              <div class="mr-5" ic-src="/api/v1/logs/total/error" ic-poll="2s">Error</div>
+            </div>
+          </div>
+        </div>
+      </div>
+          <div class="card mb-3">
+	        <div class="card-header">
+	        	Export / Actions
+	        </div>
+	        <div class="card-body">
+	        	<button type="button" class="btn btn-success" onclick="exportAll('csv');">CSV</button>
+	        	<button type="button" class="btn btn-success" onclick="exportAll('xls');">XLS</button>
+	        	<button type="button" class="btn btn-success" onclick="exportAll('txt');">TXT</button>
+	        	<button type="button" class="btn btn-success" onclick="exportAll('sql');">SQL</button>
+	        	<button id="clear" type="button" class="btn btn-info" ic-src="/api/v1/logs/clear" onclick="clear(); Intercooler.refresh(this);">Clear</button>
+	        	<button id="bottom" type="button" class="btn btn-info">Bottom</button>
+	        </div>
+    	  </div>
+          <div class="card mb-3">
+	        <div class="card-header">
+	        	Search
+	        </div>
+	        <div class="card-body">
+	        	<input type="text" id="search" onkeyup="filter()" placeholder="...">
+	        </div>
+    	  </div>
+      <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-table"></i> Log</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="table" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Message</th>
+                  <th>Level</th>
+                </tr>
+              </thead>
+              <tbody ic-append-from="/api/v1/logs/last/html" ic-poll="100ms">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.container-fluid-->
+    <!-- /.content-wrapper-->
+    <footer class="sticky-footer">
+      <div class="container">
+        <div class="text-center">
+          <small>Appium Log Reader - {{version}}</small>
+        </div>
+      </div>
+    </footer>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fa fa-angle-up"></i>
+    </a>
+
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="vendor/inter/intercooler-1.2.1.min.js"></script>
+    <script src="js/tableExport.min.js"></script>
+    <script src="js/mustache.js"></script>
+    <script src="js/main.js"></script>
+  </div>
+</body>
+
+</html>

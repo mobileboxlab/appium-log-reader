@@ -29,7 +29,7 @@ public class IntegrationTest {
 
   @BeforeClass
   public static void beforeClass() throws InterruptedException, ParameterException {
-    Service.main(new String[] {"-p", port, "-i", ip});
+    Service.main(new String[] {"-p", port});
     Spark.awaitInitialization();
   }
 

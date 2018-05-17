@@ -28,7 +28,7 @@ public class LogAccessTest {
 
   @AfterClass
   public static void afterClass() {
-    LogAccess.INSTANCE.getLogContent().clear();
+    LogAccess.INSTANCE.clear();
   }
   
   @Test
@@ -66,7 +66,7 @@ public class LogAccessTest {
 
     Log data = LogAccess.INSTANCE.getLastLine();
     String json = new Gson().toJson(data);
-    assertThatJson(json).isEqualTo("{\"message\":\"\",\"level\":\"\"}");
+    assertThatJson(json).isEqualTo("{\"time\":\"\", \"message\":\"\",\"level\":\"\"}");
   }
 
 
