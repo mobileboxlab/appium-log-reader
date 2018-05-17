@@ -20,6 +20,8 @@ You can also use **Appium Log Reader** as an [API](https://github.com/mobileboxl
   - View, filter, searching and and export logs in different formats such as: XLS, CSV, TXT, JSON, SQL, etc.
   - Localized log levels.
   - Shortcut to search errors messages on [DuckDuckGo](https://duckduckgo.com)
+  
+  ![Error](https://raw.githubusercontent.com/mobileboxlab/appium-log-reader/master/doc/error.png)
 
 # Prerequisites
 
