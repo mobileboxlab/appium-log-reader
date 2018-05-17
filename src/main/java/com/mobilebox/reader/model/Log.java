@@ -2,10 +2,16 @@ package com.mobilebox.reader.model;
 
 import static java.lang.String.format;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 public class Log implements IResponse<Log> {
+
+	@SerializedName("time")
+	private String time = "";
 
 	@SerializedName("message")
 	private String message = "";
@@ -14,11 +20,16 @@ public class Log implements IResponse<Log> {
 	private String level = "";
 
 	public Log(String message, String level) {
+		time = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
 		this.setMessage(message);
 		this.setLevel(level);
 	}
 
 	public Log() {
+	}
+
+	public String getTime() {
+		return time;
 	}
 
 	public String getMessage() {
@@ -47,7 +58,7 @@ public class Log implements IResponse<Log> {
 			prefix = format("<a href='https://duckduckgo.com/?q=%s' target='_blank'><img src='img/duck.png'></a> %s",
 					message, prefix);
 		}
-		return format("<tr><td>%s</td><td class='%s'>%s</td></tr>", prefix, level, level);
+		return format("<tr><td>%s</td><td>%s</td><td class='%s'>%s</td></tr>", time, prefix, level, level);
 	}
 
 	@Override

@@ -15,11 +15,13 @@ import static spark.Spark.get;
 import static spark.Spark.port;
 import static spark.Spark.post;
 import static spark.Spark.staticFileLocation;
-
+import static spark.Spark.options;
+import static com.mobilebox.reader.core.Conts.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.apache.commons.lang3.StringUtils.capitalize;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,9 +47,9 @@ import spark.ModelAndView;
 public class Service {
 
 	static Logger log = LoggerFactory.getLogger(Service.class);
-	static HashMap<String, Object> service = new HashMap<String, Object>();
 	static int lastLine = 0;
-
+	static Log lastLog = new Log();
+	
 	/**
 	 * Routes are matched in the order they are defined.
 	 * 
@@ -55,19 +57,16 @@ public class Service {
 	 */
 	public static void main(String[] args) throws ParameterException {
 		Integer port = 0;
-		String ip = "127.0.0.1";
 		
 		try {
             Args arguments = CommandLineParser.parse(Args.class, args, SIMPLE);
             port = Integer.valueOf(arguments.getPort());
-            ip = arguments.getIp();
         } catch (Exception e) {
         	throw new ParameterException(format("Parameter is not valid. %s", e.getMessage()));
         }
 
 		port(port);
-		log.info("Start Appium log reader service on http://{}:{}", ip, port);
-		service.put("service",format("http://%s:%s",ip, port));
+		log.info("Start Appium log reader service on port: {}", port);
 		staticFileLocation("/public");
 
 		/**
@@ -75,19 +74,40 @@ public class Service {
 		 * and read/modify the response. Enabled CORS.
 		 */
 		before((request, response) -> {
-			response.header("Access-Control-Allow-Origin", "*");
-			response.header("Access-Control-Request-Method", "*");
-			response.header("Access-Control-Allow-Headers", "*");
+			response.header(ALLOW_ORIGIN, "*");
+			response.header(REQUEST_METHODS, "*");
+			response.header(ALLOW_HEADERS, "*");
 		});
+		
+		options("/*", (request, response) -> {
+			String headers = request.headers(REQUEST_HEADER);
+			if (headers != null) {
+				response.header(ALLOW_HEADERS, headers);
+			}
 
+			String methods = request.headers(REQUEST_METHODS);
+			if (methods != null) {
+				response.header(ALLOW_METHODS, methods);
+			}
+
+			return "OK";
+		});
+		
 		/**
-		 * @api {get} /log
+		 * @api {get} /dashboard
 		 * @apiDescription Retrieve the dashboard (Yes, the dashboard).
+		 * @apiPrivate
 		 * @apiGroup Internal
-	     * @apiVersion 1.0.0
+	     * @apiVersion 1.1.0
 		 * 
 		 */
-		get("/log", (request, response) -> new ModelAndView(service, "reader.mustache"), new MustacheEngine());
+        get("/dashboard", (request, response) -> {
+        	HashMap<String, Object> vars = new HashMap<String, Object>();
+        	vars.put("version", VERSION);
+        	LogAccess.INSTANCE.clear();
+        	lastLine = 0;
+            return new ModelAndView(vars, "index.mustache"); 
+        }, new MustacheEngine());
 
 	    /**
 	     * @api {get} /logs
@@ -96,28 +116,33 @@ public class Service {
 	     * @apiVersion 1.0.0
 	     * @apiName GetLogs
 	     * 
-	     * @apiSuccessExample Success-Response: 
+	     * @apiSuccessExample {json} Success-Response: 
 	     * HTTP/1.1 200 OK
 		 * {
 		 *	    "data": {
 		 *	        "items": [
 		 *	            {
+		 *					"time": "2018.05.17.11.09.39",
 		 *	                "message": "[Appium] Appium REST http interface listener started on 0.0.0.0:4723",
 		 *	                "level": "info"
 		 *	            },
 		 *	            {
+		 *					"time": "2018.05.17.11.09.39",
 		 *	                "message": "[Appium] Appium support for versions of node < 8 has been deprecated and will be removed in a future version. Please upgrade!",
 		 *	                "level": "warn"
 		 *	            },
 		 *	            {
+		 *					"time": "2018.05.17.11.09.39",
 		 *	                "message": "[Appium]   webhook: 127.0.0.1:5000",
 		 *	                "level": "info"
 		 *	            },
 		 *	            {
+		 *					"time": "2018.05.17.11.09.39",
 		 *	                "message": "[Appium] Welcome to Appium v1.8.0",
 		 *	                "level": "info"
 		 *	            },
 		 *	            {
+		 *					"time": "2018.05.17.11.09.39",
 		 *	                "message": "[Appium] Non-default server args:",
 		 *	                "level": "info"
 		 *	            }
@@ -142,10 +167,11 @@ public class Service {
 	     * @apiVersion 1.0.0
 	     * @apiName GetLastLine
 	     * 
-	     * @apiSuccessExample Success-Response: 
+	     * @apiSuccessExample {json} Success-Response: 
 	     * HTTP/1.1 200 OK
 		 *{
 		 *	    "data": {
+		 *			"time": "2018.05.17.11.09.39",
 		 *	        "message": "[Appium] Appium REST http interface listener started on 0.0.0.0:4723",
 		 *	        "level": "info"
 		 *	    }
@@ -161,15 +187,35 @@ public class Service {
 		});
 			
 	    /**
+	     * @api {get} /logs/clear
+	     * @apiDescription Removes all of the elements from the log list.
+	     * @apiGroup Logs
+	     * @apiVersion 1.1.0
+	     * @apiName Clear
+	     * 
+	     * @apiSuccessExample Success-Response: 
+	     * HTTP/1.1 200 OK
+	     * 
+	     * @apiUse InternalError
+	     */
+		get(API_VERSION + "/logs/clear", (request, response) -> {
+			LogAccess.INSTANCE.clear();
+			lastLine = 0;
+			response.status(OK);
+			return " ";
+		});
+		
+	    /**
 	     * @api {get} /logs/last/html
 	     * @apiDescription Retrieve the last log message (HTML format)
+	     * @apiPrivate
 	     * @apiGroup Internal
 	     * @apiVersion 1.0.0
 	     * @apiName GetLastLineHtml
 	     * 
 	     * @apiSuccessExample Success-Response: 
 	     * HTTP/1.1 200 OK
-		 * <tr><td>Level</td><td class='level'>Message</td></tr>
+		 * <tr><td>Time</td><td>Message</td><td class='level'>Level</td></tr>
 	     * 
 	     * @apiUse InternalError
 	     */
@@ -178,33 +224,30 @@ public class Service {
 			response.type(CONTENT_TYPE_HTML);
 			response.status(OK);
 			//No-Op Responses for Intercooler.
-			if(logs.size() == 0) {
+			if(logs.size() == 0 || logs.size() <= lastLine) {
 				return " ";
 			}
-			
-			if(logs.size() <= lastLine) {
-				return " ";
-			}
-			
 			Log log = logs.get(lastLine);			
 			lastLine = lastLine + 1;
-			
-			if(log == null) {
+
+			if(log == null || log.equals(lastLog)) {
 				return " ";
 			}
+			lastLog = log;
 			return log.toHtml();
 		});
 
 	    /**
 	     * @api {get} /logs/total/:level
 	     * @apiDescription Retrieve the total of a given log level. (Plain text format)
+	     * @apiPrivate
 	     * @apiGroup Internal
 	     * @apiVersion 1.0.0
 	     * @apiName GetTotalByLevel
 	     * 
 	     * @apiSuccessExample Success-Response: 
 	     * HTTP/1.1 200 OK
-		 * error: 8
+		 * 8 Error
 	     * 
 	     * @apiUse InternalError
 	     */
@@ -213,23 +256,25 @@ public class Service {
 			int total = LogAccess.INSTANCE.getTotalByLevel(level);
 			response.type(CONTENT_TYPE_HTML);
 			response.status(OK);	
-			return level + ": " + total;
+			return total + " " + capitalize(level);
 		});
 		
 	    /**
 	     * @api {get} /logs/:lines 
 	     * @apiDescription Retrieve N lines of log (from the beginning).
+	     * @apiPrivate
 	     * @apiGroup Logs
 	     * @apiVersion 1.0.0
 	     * @apiName GetLines
 	     * @apiParam {int} lines Number of lines to retrieve.
 	     * 
-	     * @apiSuccessExample Success-Response: 
+	     * @apiSuccessExample {json} Success-Response: 
 	     * HTTP/1.1 200 OK
 		 *{
 		 *	    "data": {
 		 *	        "items": [
 		 *	            {
+		 *                  "time": "2018.05.17.11.09.39",
 		 *	                "message": "[Appium] Received SIGINT - shutting down",
 		 *	                "level": "info"
 		 *	            }
@@ -255,22 +300,42 @@ public class Service {
 			response.status(OK);
 			return new Response().withData(nLogs).toJson();
 		});
-
+		
 		/**
-		 * The Appium POST receiver. 
-		 * 
-		 * Payload: 
-		 *{
+	     * @api {post} / 
+	     * @apiDescription Log receiver. 
+	     * @apiGroup Logs
+	     * @apiVersion 1.0.0
+	     * @apiName GetLines
+	     * @apiParam {json} payload
+		 * {
 		 *  "params": {		     
 		 *    "message": "Console",
 		 *    "level": "info"
 		 *  }
-		 *}
-		 */
+		 * }
+	     * @apiSuccessExample {json} Success-Response:
+	     * HTTP/1.1 200 OK
+		 *{
+		 *	    "data": {
+		 *	        "items": [
+		 *	            {
+		 *                  "time": "2018.05.17.11.09.39",
+		 *	                "message": "[Appium] Received SIGINT - shutting down",
+		 *	                "level": "info"
+		 *	            }
+		 *	        ],
+		 *	        "size": 1
+		 *	    }
+         *}
+	     * 
+	     * @apiUse ParameterError
+	     * @apiUse InternalError
+	     */
 		post("/", (request, response) -> {
 			Map<?, ?> log = (Map<?, ?>) new Gson().fromJson(request.body(), Map.class).get("params");
 			Log logThis = new Log(log.get("message").toString(), log.get("level").toString());
-			LogAccess.INSTANCE.getLogContent().add(logThis);
+			LogAccess.INSTANCE.add(logThis);
 			response.status(OK);
 			return "";
 		});
@@ -280,7 +345,7 @@ public class Service {
 	     *
 	     * @apiError (500) InternalError Generic error
 	     *
-	     * @apiErrorExample Error-Response:
+	     * @apiErrorExample {json} Error-Response:
 	     * HTTP/1.1 500 Server Error
 	     * {
 	     *     "code": "",
@@ -298,7 +363,7 @@ public class Service {
 	     *
 	     * @apiError (404) NotFoundError The resource you have referenced could not be found.
 	     *
-	     * @apiErrorExample Error-Response:
+	     * @apiErrorExample {json} Error-Response:
 	     * HTTP/1.1 404 Not Found
 	     * {
 	     *     "code": "",
@@ -318,7 +383,7 @@ public class Service {
 	     * You might be using an unsupported parameter or have a 
 	     * malformed something or another.
 	     *
-	     * @apiErrorExample Error-Response:
+	     * @apiErrorExample {json} Error-Response:
 	     * HTTP/1.1 400 Bad Request
 	     * {
 	     *     "code": "",

@@ -8,7 +8,6 @@ import com.github.jankroken.commandline.annotations.SingleArgument;
 
 public class Args {
 	private String port;
-	private String ip;
 
 	@Option
 	@LongSwitch("port")
@@ -19,20 +18,7 @@ public class Args {
 		this.port = port;
 	}
 
-	@Option
-	@LongSwitch("ip")
-	@ShortSwitch("i")
-	@SingleArgument
-	@Required
-	public void setIp(String ip) {
-		this.ip = ip;
-	}
-
 	public String getPort() {
 		return port;
-	}
-
-	public String getIp() {
-		return ip;
 	}
 }
