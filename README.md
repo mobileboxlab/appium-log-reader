@@ -168,7 +168,7 @@ http http://127.0.0.1:5000/api/v1/logs/1
 Post your own log message:
 
 ```bash
-http  http 127.0.0.1:5000/ params:='{"message": "My message", "level": "info" }'
+http  http://127.0.0.1:5000/ params:='{"message": "My message", "level": "info" }'
 ```
 
 
