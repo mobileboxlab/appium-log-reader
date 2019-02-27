@@ -1,6 +1,5 @@
 
 ![charly](http://open.mobileboxlab.com/img/log-appium.gif)
-
 ___
 
 [![Build Status](https://travis-ci.org/mobileboxlab/appium-log-reader.svg?branch=master)](https://travis-ci.org/mobileboxlab/appium-log-reader) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6bb1301af08048b782c166c7c7dfd3a1)](https://www.codacy.com/app/dev-mobileboxlab/appium-log-reader?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mobileboxlab/appium-log-reader&amp;utm_campaign=Badge_Grade)
